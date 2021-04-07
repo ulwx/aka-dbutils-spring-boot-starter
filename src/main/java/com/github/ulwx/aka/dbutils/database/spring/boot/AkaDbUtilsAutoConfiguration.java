@@ -73,10 +73,8 @@ public class AkaDbUtilsAutoConfiguration {
             }
 
             BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(AkaMpperScannerConfigurer.class);
-            //builder.addPropertyValue("annotationClass", Mapper.class);
             builder.addPropertyValue("basePackage", StringUtils.collectionToCommaDelimitedString(packages));
-            BeanWrapper beanWrapper = new BeanWrapperImpl(AkaMpperScannerConfigurer.class);
-
+            builder.addPropertyValue("mdDataBaseTemplateBeanName", "mDataBaseTemplate");
             registry.registerBeanDefinition(AkaMpperScannerConfigurer.class.getName(), builder.getBeanDefinition());
         }
 
