@@ -45,6 +45,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <scm>
         <connection>https://github.com/ulwx/aka-dbutils-spring-boot-starter.git</connection>
         <url>https://github.com/ulwx/aka-dbutils-spring-boot-starter</url>
