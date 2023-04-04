@@ -8,7 +8,6 @@ public class AkaDbUtilsProperties {
     public static final String PREFIX = "aka.dbutils";
     private  String tableNameRule= DbConst.TableNameRules.underline_to_camel;
     private  String tableColumRule=DbConst.TableColumRules.underline_to_camel;
-
     public String getTableNameRule() {
         return tableNameRule;
     }
@@ -24,4 +23,5 @@ public class AkaDbUtilsProperties {
     public void setTableColumRule(String tableColumRule) {
         this.tableColumRule = tableColumRule;
     }
+
 }

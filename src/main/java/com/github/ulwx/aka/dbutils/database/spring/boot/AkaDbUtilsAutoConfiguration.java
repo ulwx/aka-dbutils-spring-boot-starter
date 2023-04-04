@@ -5,12 +5,11 @@ import com.github.ulwx.aka.dbutils.database.spring.MDataBaseFactory;
 import com.github.ulwx.aka.dbutils.database.spring.MDataBaseTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -18,21 +17,21 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
 import java.util.List;
-
-@Configuration
 @EnableConfigurationProperties(AkaDbUtilsProperties.class)
 @ConditionalOnClass({ MDataBaseTemplate.class })
 @ConditionalOnSingleCandidate(DataSource.class)
 @AutoConfigureAfter({ DataSourceAutoConfiguration.class })
+@AutoConfiguration
 public class AkaDbUtilsAutoConfiguration {
     private final AkaDbUtilsProperties properties;
     private static final Logger logger = LoggerFactory.getLogger(AkaDbUtilsAutoConfiguration.class);
@@ -54,10 +53,23 @@ public class AkaDbUtilsAutoConfiguration {
     public MDataBaseTemplate mDataBaseTemplate(MDataBaseFactory mDataBaseFactory) {
         return new MDataBaseTemplate(mDataBaseFactory);
     }
+    @Configuration
+    @Import(AkaAutoConfiguredMapperScannerRegistrar.class)
+    @ConditionalOnMissingBean({ AkaMpperScannerConfigurer.class })
+    public static class MapperScannerRegistrarNotFoundConfiguration  {
 
-    public static class AkaAutoConfiguredMapperScannerRegistrar implements BeanFactoryAware, ImportBeanDefinitionRegistrar {
+
+    }
+    public static class AkaAutoConfiguredMapperScannerRegistrar implements BeanFactoryAware,
+            ImportBeanDefinitionRegistrar, EnvironmentAware {
 
         private BeanFactory beanFactory;
+        private Environment environment;
+
+        @Override
+        public void setEnvironment(Environment environment) {
+            this.environment=environment;
+        }
 
         @Override
         public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
@@ -73,7 +85,11 @@ public class AkaDbUtilsAutoConfiguration {
             }
 
             BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(AkaMpperScannerConfigurer.class);
-            builder.addPropertyValue("basePackage", StringUtils.collectionToCommaDelimitedString(packages));
+
+            AkaDbUtilsProperties akaDbUtilsProperties=
+                    Binder.get(environment).bind(AkaDbUtilsProperties.PREFIX, Bindable.of(AkaDbUtilsProperties.class)).get();
+            String basePackage=StringUtils.collectionToCommaDelimitedString(packages);
+            builder.addPropertyValue("basePackages",basePackage );
             registry.registerBeanDefinition(AkaMpperScannerConfigurer.class.getName(), builder.getBeanDefinition());
         }
 
@@ -84,12 +100,5 @@ public class AkaDbUtilsAutoConfiguration {
 
     }
 
-    @Configuration
-    @Import(AkaAutoConfiguredMapperScannerRegistrar.class)
-    @ConditionalOnMissingBean({ AkaMpperScannerConfigurer.class })
-    public static class MapperScannerRegistrarNotFoundConfiguration  {
 
-
-
-    }
 }

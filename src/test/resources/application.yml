@@ -1,0 +1,11 @@
+logging:
+  config: classpath:logback-spring.xml
+
+aka:
+  dbutils:
+    table-colum-rule: underline_to_camel
+    table-name-rule: underline_to_camel
+
+
+
+
