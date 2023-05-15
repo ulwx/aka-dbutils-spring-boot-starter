@@ -37,7 +37,6 @@ public class AkaMapperScannerRegistrar implements ImportBeanDefinitionRegistrar,
 
 
   @Override
-  @Deprecated
   public void setResourceLoader(ResourceLoader resourceLoader) {
     // NOP
   }
