@@ -29,7 +29,6 @@ import javax.sql.DataSource;
 import java.util.List;
 @EnableConfigurationProperties(AkaDbUtilsProperties.class)
 @ConditionalOnClass({ MDataBaseTemplate.class })
-//@Configuration("com.github.ulwx.aka.dbutils.database.spring.boot.AkaDbUtilsAutoConfiguration")
 public class AkaDbUtilsAutoConfiguration {
     private final AkaDbUtilsProperties properties;
     private static final Logger logger = LoggerFactory.getLogger(AkaDbUtilsAutoConfiguration.class);
