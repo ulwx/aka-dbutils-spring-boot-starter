@@ -17,8 +17,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: com.github.ulwx:aka-dbutils-spring:2.0" level="project" />
-    <orderEntry type="library" name="Maven: com.github.ulwx:aka-dbutils:2.0" level="project" />
+    <orderEntry type="module" module-name="aka-dbutils-spring" />
+    <orderEntry type="module" module-name="aka-dbutils" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.13.5" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.5" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.13.5" level="project" />
