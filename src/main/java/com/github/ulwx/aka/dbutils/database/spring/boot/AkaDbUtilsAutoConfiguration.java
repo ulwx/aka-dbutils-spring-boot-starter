@@ -23,6 +23,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
@@ -35,6 +37,7 @@ public class AkaDbUtilsAutoConfiguration {
     public AkaDbUtilsAutoConfiguration(AkaDbUtilsProperties properties) {
         this.properties = properties;
     }
+
 
     @Bean
     @ConditionalOnMissingBean
